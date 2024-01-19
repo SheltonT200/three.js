@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -18,28 +17,64 @@
 	<body>
 		<script type="module">
 		import * as THREE from 'three';
-
+		import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
+const fov = 120;
+	const aspect = 2;
+	const near = 0.00001;
+	const far = 1e2;
+const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
-
-const geometry = new THREE.SphereGeometry( 1.5, 100, 100 );
-const material = new THREE.MeshPhongMaterial( { color: 0x00ff00, emissive:0xffff00 } );
+const group = new THREE.Group()
+const geometry = new THREE.SphereGeometry( 3, 64, 64 );
+geometry.drawRange={"start": 301,"count": Infinity}//{"start": 6000,"count": Infinity}
+const material = new THREE.MeshNormalMaterial({ })//color: 0x00FF00, specular: 0x0000FF, emissive:0xFFFF00})//MeshPhongMaterial( { color: 0x00FF00, specular: 0x0000FF, emissive:0xFFFF00, shini } );
 const s = new THREE.Mesh( geometry, material );
-s.geometry.drawRange={"start": 699999,"count": Infinity}
-scene.add( s );
-camera.position.set(1, 1, 4);
+group.add(s);
+scene.add( group );
+s.position.set( - 3 - 4, 3 + 2, 2 * 3 * - 2.2 );
+camera.position.set(5, 3, 5);
 console.log(s)
-var times = 0;
+function ChangeSpeed(){
+	console.log(Values)
+}
+function _sizeChangeX(){
+	s.scale.set(Values.Scale_X,s.scale.y,s.scale.z)
+}
+function _sizeChangeY(){
+	s.scale.set(s.scale.x,Values.Scale_Y,s.scale.z)
+}
+function _sizeChangeZ(){
+	s.scale.set(s.scale.x,s.scale.y,Values.Scale_Z)
+}
+const Values = {
+	'speed': 1,
+	'x': 0.01,
+	'y': 0.01,
+	'z': 0.01,
+	'Scale_X': 1,
+	'Scale_Y': 1,
+	'Scale_Z': 1
+	
+};
+const gui = new GUI();
+const folder = gui.addFolder('speed')
+folder.add(Values, 'speed', 0.5, 500, 0.5).name('speed Multiplier').onChange(ChangeSpeed)
+const folder1 = folder.addFolder('sphere speed')
+folder1.add(Values, 'x', -1, 1, 0.01).name('x-speed').onChange(ChangeSpeed)
+folder1.add(Values, 'y', -1, 1, 0.01).name('y-speed').onChange(ChangeSpeed)
+folder1.add(Values, 'z', -1, 1, 0.01).name('z-speed').onChange(ChangeSpeed)
+const folder2 = gui.addFolder( 'scale' );
+folder2.add(Values, 'Scale_X', [1,2,3]).name('size-X').onChange(_sizeChangeX)
+folder2.add(Values, 'Scale_Y', [1,2,3]).name('size-Y').onChange(_sizeChangeY)
+folder2.add(Values, 'Scale_Z', [1,2,3]).name('size-Z').onChange(_sizeChangeZ)
 function animate() {
 	requestAnimationFrame( animate );
-	times+=0.01
-	s.rotation.x += 0.01*times;
-	s.rotation.y += 0.01*times;
-
+	s.rotation.x += (Values.x*Values.speed);
+	s.rotation.y += (Values.y*Values.speed);
+	s.rotation.z += (Values.z*Values.speed);
 	renderer.render( scene, camera );
 }
 
