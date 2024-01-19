@@ -26,18 +26,19 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.SphereGeometry( 1, 100, 100 );
+const geometry = new THREE.SphereGeometry( 1.5, 100, 100 );
 const material = new THREE.MeshPhongMaterial( { color: 0x00ff00, emissive:0xffff00 } );
 const s = new THREE.Mesh( geometry, material );
 s.geometry.drawRange={"start": 699999,"count": Infinity}
 scene.add( s );
-camera.position.set(1, 0, 5);
+camera.position.set(1, 1, 4);
 console.log(s)
+var times = 0;
 function animate() {
 	requestAnimationFrame( animate );
-
-	s.rotation.x += 0.01;
-	s.rotation.y += 0.01;
+	times+=0.01
+	s.rotation.x += 0.01*times;
+	s.rotation.y += 0.01*times;
 
 	renderer.render( scene, camera );
 }
