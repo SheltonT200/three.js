@@ -1,7 +1,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>test</title>
+		<title>sphereoid fun</title>
 		<style>
 			body { margin: 0; }
 		</style>
@@ -19,7 +19,7 @@
 		import * as THREE from 'three';
 		import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 const scene = new THREE.Scene();
-const fov = 120;
+const fov = 130;
 	const aspect = 2;
 	const near = 0.00001;
 	const far = 1e2;
@@ -28,7 +28,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 const group = new THREE.Group()
-const geometry = new THREE.SphereGeometry( 3, 64, 64 );
+const geometry = new THREE.SphereGeometry( 1.25, 1024, 1024 );
 geometry.drawRange={"start": 301,"count": Infinity}//{"start": 6000,"count": Infinity}
 const material = new THREE.MeshNormalMaterial({ })//color: 0x00FF00, specular: 0x0000FF, emissive:0xFFFF00})//MeshPhongMaterial( { color: 0x00FF00, specular: 0x0000FF, emissive:0xFFFF00, shini } );
 const s = new THREE.Mesh( geometry, material );
@@ -36,10 +36,6 @@ group.add(s);
 scene.add( group );
 s.position.set( - 3 - 4, 3 + 2, 2 * 3 * - 2.2 );
 camera.position.set(5, 3, 5);
-console.log(s)
-function ChangeSpeed(){
-	console.log(Values)
-}
 function _sizeChangeX(){
 	s.scale.set(Values.Scale_X,s.scale.y,s.scale.z)
 }
@@ -50,7 +46,7 @@ function _sizeChangeZ(){
 	s.scale.set(s.scale.x,s.scale.y,Values.Scale_Z)
 }
 const Values = {
-	'speed': 1,
+	'speed': 0.5,
 	'x': 0.01,
 	'y': 0.01,
 	'z': 0.01,
@@ -59,17 +55,18 @@ const Values = {
 	'Scale_Z': 1
 	
 };
+var scales = [1,1.5,2,2.5,3,3.5,4,4.5,5];
 const gui = new GUI();
 const folder = gui.addFolder('speed')
-folder.add(Values, 'speed', 0.5, 500, 0.5).name('speed Multiplier').onChange(ChangeSpeed)
+folder.add(Values, 'speed', 0.1, 5, 0.1).name('speed Multiplier')
 const folder1 = folder.addFolder('sphere speed')
-folder1.add(Values, 'x', -1, 1, 0.01).name('x-speed').onChange(ChangeSpeed)
-folder1.add(Values, 'y', -1, 1, 0.01).name('y-speed').onChange(ChangeSpeed)
-folder1.add(Values, 'z', -1, 1, 0.01).name('z-speed').onChange(ChangeSpeed)
+folder1.add(Values, 'x', -1, 1, 0.01).name('x-speed')
+folder1.add(Values, 'y', -1, 1, 0.01).name('y-speed')
+folder1.add(Values, 'z', -1, 1, 0.01).name('z-speed')
 const folder2 = gui.addFolder( 'scale' );
-folder2.add(Values, 'Scale_X', [1,2,3]).name('size-X').onChange(_sizeChangeX)
-folder2.add(Values, 'Scale_Y', [1,2,3]).name('size-Y').onChange(_sizeChangeY)
-folder2.add(Values, 'Scale_Z', [1,2,3]).name('size-Z').onChange(_sizeChangeZ)
+folder2.add(Values, 'Scale_X', scales).name('size-X').onChange(_sizeChangeX)
+folder2.add(Values, 'Scale_Y', scales).name('size-Y').onChange(_sizeChangeY)
+folder2.add(Values, 'Scale_Z', scales).name('size-Z').onChange(_sizeChangeZ)
 function animate() {
 	requestAnimationFrame( animate );
 	s.rotation.x += (Values.x*Values.speed);
