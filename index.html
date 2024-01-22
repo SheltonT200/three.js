@@ -28,9 +28,9 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 const group = new THREE.Group()
-const geometry = new THREE.SphereGeometry( 1.25, 1024, 1024 );
-geometry.drawRange={"start": 301,"count": Infinity}//{"start": 6000,"count": Infinity}
-const material = new THREE.MeshNormalMaterial({ })//color: 0x00FF00, specular: 0x0000FF, emissive:0xFFFF00})//MeshPhongMaterial( { color: 0x00FF00, specular: 0x0000FF, emissive:0xFFFF00, shini } );
+const geometry = new THREE.SphereGeometry( 1.5, 1024, 1024 );
+geometry.drawRange={"start": 301,"count": Infinity}
+const material = new THREE.MeshNormalMaterial({ })
 const s = new THREE.Mesh( geometry, material );
 group.add(s);
 scene.add( group );
@@ -45,30 +45,66 @@ function _sizeChangeY(){
 function _sizeChangeZ(){
 	s.scale.set(s.scale.x,s.scale.y,Values.Scale_Z)
 }
+function _sizeChangeInit(){
+_sizeChangeX()
+_sizeChangeY()
+_sizeChangeZ()
+}
 const Values = {
-	'speed': 0.5,
+	'speed': 0.05,
 	'x': 0.01,
-	'y': 0.01,
+	'y': -0.01,
 	'z': 0.01,
-	'Scale_X': 1,
-	'Scale_Y': 1,
-	'Scale_Z': 1
-	
+	'Scale_X': 3,
+	'Scale_Y': 3,
+	'Scale_Z': 3
 };
-var scales = [1,1.5,2,2.5,3,3.5,4,4.5,5];
+const DV = {
+	'speed': 0.05,
+	'x': 0.01,
+	'y': -0.01,
+	'z': 0.01,
+	'Scale_X': 3,
+	'Scale_Y': 3,
+	'Scale_Z': 3
+};
+const params = {
+	'func': function resetValuesToDefault(){
+	if (confirm('you sure?')==true){
+	Values.speed=DV.speed
+	Values.x=DV.x
+	Values.y=DV.y
+	Values.z=DV.z
+	Values.Scale_X=DV.Scale_X
+	Values.Scale_Y=DV.Scale_Y
+	Values.Scale_Z=DV.Scale_Z
+	_sizeChangeInit()
+	}
+},
+	'feedback': new Date().toLocaleTimeString()
+}
+var scales = [0.25,0.5,1.5,3,4,8];
+_sizeChangeInit()
+function init(){
 const gui = new GUI();
 const folder = gui.addFolder('speed')
-folder.add(Values, 'speed', 0.1, 5, 0.1).name('speed Multiplier')
+folder.add(Values, 'speed', 0.05, 5, 0.05).name('speed Multiplier').listen()
 const folder1 = folder.addFolder('sphere speed')
-folder1.add(Values, 'x', -1, 1, 0.01).name('x-speed')
-folder1.add(Values, 'y', -1, 1, 0.01).name('y-speed')
-folder1.add(Values, 'z', -1, 1, 0.01).name('z-speed')
+folder1.add(Values, 'x', -1, 1, 0.01).name('x-speed').listen()
+folder1.add(Values, 'y', -1, 1, 0.01).name('y-speed').listen()
+folder1.add(Values, 'z', -1, 1, 0.01).name('z-speed').listen()
 const folder2 = gui.addFolder( 'scale' );
-folder2.add(Values, 'Scale_X', scales).name('size-X').onChange(_sizeChangeX)
-folder2.add(Values, 'Scale_Y', scales).name('size-Y').onChange(_sizeChangeY)
-folder2.add(Values, 'Scale_Z', scales).name('size-Z').onChange(_sizeChangeZ)
+folder2.add(Values, 'Scale_X', scales).name('size-X').onChange(_sizeChangeX).listen()
+folder2.add(Values, 'Scale_Y', scales).name('size-Y').onChange(_sizeChangeY).listen()
+folder2.add(Values, 'Scale_Z', scales).name('size-Z').onChange(_sizeChangeZ).listen()
+const folder3 = gui.addFolder( 'reset' );
+folder3.add(params, 'func').name( ' set to default ')
+gui.add(params, 'feedback').listen().name('time')
+}
+init()
 function animate() {
 	requestAnimationFrame( animate );
+	params.feedback = new Date().toLocaleTimeString();
 	s.rotation.x += (Values.x*Values.speed);
 	s.rotation.y += (Values.y*Values.speed);
 	s.rotation.z += (Values.z*Values.speed);
