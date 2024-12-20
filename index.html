@@ -20,9 +20,16 @@
 		/*
 		import * as THREE from 'three';
 		import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-  		*/
 		const THREE = await import("three")
 		const {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
+  		*/
+		async function imports(){
+	const three = await import("three")
+	const {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
+	window.THREE = three
+	window.GUI = GUI
+}
+imports()
 const scene = new THREE.Scene();
 const fov = 130;
 	const aspect = 2;
