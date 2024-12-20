@@ -23,7 +23,7 @@
 		 THREE = await import("three")
 		 {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
   		*/
-		async function imports(){
+async function imports(){
 	var three = await import("three")
 	var {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
 	window.THREE = three
@@ -32,7 +32,7 @@
 imports()
 
 		</script>
-<script async> 
+<script defer> 
 
  scene = new THREE.Scene();
  fov = 130;
