@@ -20,30 +20,30 @@
 		/*
 		import * as THREE from 'three';
 		import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-		const THREE = await import("three")
-		const {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
+		 THREE = await import("three")
+		 {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
   		*/
 		async function imports(){
-	const three = await import("three")
-	const {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
+	var three = await import("three")
+	var {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
 	window.THREE = three
 	window.GUI = GUI
 }
 imports()
-const scene = new THREE.Scene();
-const fov = 130;
-	const aspect = 2;
-	const near = 0.00001;
-	const far = 1e2;
-const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
-const renderer = new THREE.WebGLRenderer();
+ scene = new THREE.Scene();
+ fov = 130;
+	 aspect = 2;
+	 near = 0.00001;
+	 far = 1e2;
+ camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
+ renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
-const group = new THREE.Group()
-const geometry = new THREE.SphereGeometry( 1.5, 1024, 1024 );
+ group = new THREE.Group()
+ geometry = new THREE.SphereGeometry( 1.5, 1024, 1024 );
 geometry.drawRange={"start": 301,"count": Infinity}
-const material = new THREE.MeshNormalMaterial({ })
-const s = new THREE.Mesh( geometry, material );
+ material = new THREE.MeshNormalMaterial({ })
+ s = new THREE.Mesh( geometry, material );
 group.add(s);
 scene.add( group );
 s.position.set( - 3 - 4, 3 + 2, 2 * 3 * - 2.2 );
@@ -62,7 +62,7 @@ _sizeChangeX()
 _sizeChangeY()
 _sizeChangeZ()
 }
-const Values = {
+ Values = {
 	'speed': 0.05,
 	'x': 0.01,
 	'y': -0.01,
@@ -71,7 +71,7 @@ const Values = {
 	'Scale_Y': 3,
 	'Scale_Z': 3
 };
-const DV = {
+ DV = {
 	'speed': 0.05,
 	'x': 0.01,
 	'y': -0.01,
@@ -80,7 +80,7 @@ const DV = {
 	'Scale_Y': 3,
 	'Scale_Z': 3
 };
-const params = {
+ params = {
 	'func': function resetValuesToDefault(){
 	if (confirm('you sure?')==true){
 	Values.speed=DV.speed
@@ -98,18 +98,18 @@ const params = {
 var scales = [0.25,0.5,1.5,3,4,8];
 _sizeChangeInit()
 function init(){
-const gui = new GUI();
-const folder = gui.addFolder('speed')
+ gui = new GUI();
+ folder = gui.addFolder('speed')
 folder.add(Values, 'speed', 0.05, 5, 0.05).name('speed Multiplier').listen()
-const folder1 = folder.addFolder('sphere speed')
+ folder1 = folder.addFolder('sphere speed')
 folder1.add(Values, 'x', -1, 1, 0.01).name('x-speed').listen()
 folder1.add(Values, 'y', -1, 1, 0.01).name('y-speed').listen()
 folder1.add(Values, 'z', -1, 1, 0.01).name('z-speed').listen()
-const folder2 = gui.addFolder( 'scale' );
+ folder2 = gui.addFolder( 'scale' );
 folder2.add(Values, 'Scale_X', scales).name('size-X').onChange(_sizeChangeX).listen()
 folder2.add(Values, 'Scale_Y', scales).name('size-Y').onChange(_sizeChangeY).listen()
 folder2.add(Values, 'Scale_Z', scales).name('size-Z').onChange(_sizeChangeZ).listen()
-const folder3 = gui.addFolder( 'reset' );
+ folder3 = gui.addFolder( 'reset' );
 folder3.add(params, 'func').name( ' set to default ')
 gui.add(params, 'feedback').listen().name('time')
 }
