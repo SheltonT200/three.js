@@ -15,9 +15,14 @@
 </script>
 	</head>
 	<body>
-		<script type="module">
+		<!--script type="module"-->
+		<script>
+		/*
 		import * as THREE from 'three';
 		import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+  		*/
+		const THREE = await import("three")
+		const {GUI} = await import("three/addons/libs/lil-gui.module.min.js")
 const scene = new THREE.Scene();
 const fov = 130;
 	const aspect = 2;
